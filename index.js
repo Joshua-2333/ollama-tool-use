@@ -46,3 +46,11 @@ const arguments_ = toolCall.function.arguments;
 
 console.log("Tool requested:", toolName);
 console.log("Arguments:", arguments_);
+
+let result;
+
+if (toolName === "calculate") {
+  result = calculate(arguments_.a, arguments_.b);
+}
+
+console.log("Tool result:", result);
