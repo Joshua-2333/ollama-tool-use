@@ -1,5 +1,9 @@
 import ollama from "ollama";
 
+function calculate(a, b) {
+  return a + b;
+}
+
 const response = await ollama.chat({
   model: "qwen3",
   messages: [
