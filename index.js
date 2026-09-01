@@ -39,4 +39,28 @@ const response = await ollama.chat({
   ],
 });
 
-console.log(response);
+const toolCall = response.message.tool_calls[0];
+
+const result = calculate(
+  toolCall.function.arguments.a,
+  toolCall.function.arguments.b
+);
+
+const messages = [
+  {
+    role: "user",
+    content: "What is 10 + 5?",
+  },
+  response.message,
+  {
+    role: "tool",
+    content: String(result),
+  },
+];
+
+const finalResponse = await ollama.chat({
+  model: "qwen3",
+  messages,
+});
+
+console.log(finalResponse.message.content);
