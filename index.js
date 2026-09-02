@@ -1,6 +1,7 @@
 // index.js
 
 import ollama from "ollama";
+
 import { toolDefinitions, availableTools } from "./tools.js";
 
 function executeTool(toolName, arguments_) {
@@ -20,7 +21,7 @@ const response = await ollama.chat({
     {
       role: "user",
       content:
-        "What is today's date, what time is it, and what is 25 + 17?",
+        "What is today's date, what time is it, what is 25 + 17, and what is 6 * 7?",
     },
   ],
 
@@ -53,7 +54,7 @@ const messages = [
   {
     role: "user",
     content:
-      "What is today's date, what time is it, and what is 25 + 17?",
+      "What is today's date, what time is it, what is 25 + 17, and what is 6 * 7?",
   },
 
   response.message,

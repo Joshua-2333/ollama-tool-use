@@ -6,6 +6,12 @@ export function calculate(arguments_) {
   return a + b;
 }
 
+export function multiply(arguments_) {
+  const { a, b } = arguments_;
+
+  return a * b;
+}
+
 export function getTime() {
   return new Date().toLocaleTimeString();
 }
@@ -20,6 +26,28 @@ export const toolDefinitions = [
     function: {
       name: "calculate",
       description: "Add two numbers together.",
+      parameters: {
+        type: "object",
+        properties: {
+          a: {
+            type: "number",
+            description: "The first number.",
+          },
+          b: {
+            type: "number",
+            description: "The second number.",
+          },
+        },
+        required: ["a", "b"],
+      },
+    },
+  },
+
+  {
+    type: "function",
+    function: {
+      name: "multiply",
+      description: "Multiply two numbers together.",
       parameters: {
         type: "object",
         properties: {
@@ -64,6 +92,7 @@ export const toolDefinitions = [
 
 export const availableTools = {
   calculate,
+  multiply,
   getTime,
   getDate,
 };
