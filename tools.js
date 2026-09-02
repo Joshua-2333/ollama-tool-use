@@ -42,3 +42,8 @@ export const toolDefinitions = [
     },
   },
 ];
+
+export const availableTools = {
+  calculate,
+  getTime,
+};

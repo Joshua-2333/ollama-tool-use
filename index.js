@@ -1,23 +1,16 @@
 // index.js
 
 import ollama from "ollama";
-
-import {
-  calculate,
-  getTime,
-  toolDefinitions,
-} from "./tools.js";
+import { toolDefinitions, availableTools } from "./tools.js";
 
 function executeTool(toolName, arguments_) {
-  if (toolName === "calculate") {
-    return calculate(arguments_.a, arguments_.b);
+  const tool = availableTools[toolName];
+
+  if (!tool) {
+    throw new Error(`Unknown tool: ${toolName}`);
   }
 
-  if (toolName === "getTime") {
-    return getTime();
-  }
-
-  throw new Error(`Unknown tool: ${toolName}`);
+  return tool(arguments_);
 }
 
 const response = await ollama.chat({
