@@ -4,6 +4,10 @@ function calculate(a, b) {
   return a + b;
 }
 
+function getTime() {
+  return new Date().toLocaleTimeString();
+}
+
 const response = await ollama.chat({
   model: "qwen3",
 
@@ -36,6 +40,18 @@ const response = await ollama.chat({
         },
       },
     },
+
+    {
+      type: "function",
+      function: {
+        name: "getTime",
+        description: "Get the current local time.",
+        parameters: {
+          type: "object",
+          properties: {},
+        },
+      },
+    },
   ],
 });
 
@@ -54,3 +70,25 @@ if (toolName === "calculate") {
 }
 
 console.log("Tool result:", result);
+
+const messages = [
+  {
+    role: "user",
+    content: "What is 10 + 5?",
+  },
+
+  response.message,
+
+  {
+    role: "tool",
+    tool_name: toolCall.function.name,
+    content: String(result),
+  },
+];
+
+const finalResponse = await ollama.chat({
+  model: "qwen3",
+  messages,
+});
+
+console.log(finalResponse.message.content);
