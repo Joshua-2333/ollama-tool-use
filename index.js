@@ -14,7 +14,7 @@ const response = await ollama.chat({
   messages: [
     {
       role: "user",
-      content: "What is 10 + 5?",
+      content: "What time is it?",
     },
   ],
 
@@ -67,6 +67,8 @@ let result;
 
 if (toolName === "calculate") {
   result = calculate(arguments_.a, arguments_.b);
+} else if (toolName === "getTime") {
+  result = getTime();
 }
 
 console.log("Tool result:", result);
@@ -74,7 +76,7 @@ console.log("Tool result:", result);
 const messages = [
   {
     role: "user",
-    content: "What is 10 + 5?",
+    content: "What time is it?",
   },
 
   response.message,
