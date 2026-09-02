@@ -1,5 +1,7 @@
 // tools.js
-export function calculate(a, b) {
+export function calculate(arguments_) {
+  const { a, b } = arguments_;
+
   return a + b;
 }
 
