@@ -16,6 +16,8 @@ function executeTool(toolName, arguments_) {
   if (toolName === "getTime") {
     return getTime();
   }
+
+  throw new Error(`Unknown tool: ${toolName}`);
 }
 
 const response = await ollama.chat({
@@ -24,7 +26,7 @@ const response = await ollama.chat({
   messages: [
     {
       role: "user",
-      content: "What time is it?",
+      content: "What time is it, and what is 25 + 17?",
     },
   ],
 
@@ -65,31 +67,37 @@ const response = await ollama.chat({
   ],
 });
 
-const toolCall = response.message.tool_calls[0];
+const toolCalls = response.message.tool_calls;
 
-const toolName = toolCall.function.name;
-const arguments_ = toolCall.function.arguments;
+const toolResults = [];
 
-console.log("Tool requested:", toolName);
-console.log("Arguments:", arguments_);
+for (const toolCall of toolCalls) {
+  const toolName = toolCall.function.name;
+  const arguments_ = toolCall.function.arguments;
 
-const result = executeTool(toolName, arguments_);
+  console.log("Tool requested:", toolName);
+  console.log("Arguments:", arguments_);
 
-console.log("Tool result:", result);
+  const result = executeTool(toolName, arguments_);
+
+  console.log("Tool result:", result);
+
+  toolResults.push({
+    role: "tool",
+    tool_name: toolName,
+    content: String(result),
+  });
+}
 
 const messages = [
   {
     role: "user",
-    content: "What time is it?",
+    content: "What time is it, and what is 25 + 17?",
   },
 
   response.message,
 
-  {
-    role: "tool",
-    tool_name: toolCall.function.name,
-    content: String(result),
-  },
+  ...toolResults,
 ];
 
 const finalResponse = await ollama.chat({
