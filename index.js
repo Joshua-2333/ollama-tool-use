@@ -1,12 +1,12 @@
+// index.js
+
 import ollama from "ollama";
 
-function calculate(a, b) {
-  return a + b;
-}
-
-function getTime() {
-  return new Date().toLocaleTimeString();
-}
+import {
+  calculate,
+  getTime,
+  toolDefinitions,
+} from "./tools.js";
 
 function executeTool(toolName, arguments_) {
   if (toolName === "calculate") {
@@ -30,41 +30,7 @@ const response = await ollama.chat({
     },
   ],
 
-  tools: [
-    {
-      type: "function",
-      function: {
-        name: "calculate",
-        description: "Add two numbers together.",
-        parameters: {
-          type: "object",
-          properties: {
-            a: {
-              type: "number",
-              description: "The first number.",
-            },
-            b: {
-              type: "number",
-              description: "The second number.",
-            },
-          },
-          required: ["a", "b"],
-        },
-      },
-    },
-
-    {
-      type: "function",
-      function: {
-        name: "getTime",
-        description: "Get the current local time.",
-        parameters: {
-          type: "object",
-          properties: {},
-        },
-      },
-    },
-  ],
+  tools: toolDefinitions,
 });
 
 const toolCalls = response.message.tool_calls;
