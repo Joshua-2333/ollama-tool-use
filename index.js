@@ -8,6 +8,16 @@ function getTime() {
   return new Date().toLocaleTimeString();
 }
 
+function executeTool(toolName, arguments_) {
+  if (toolName === "calculate") {
+    return calculate(arguments_.a, arguments_.b);
+  }
+
+  if (toolName === "getTime") {
+    return getTime();
+  }
+}
+
 const response = await ollama.chat({
   model: "qwen3",
 
@@ -63,13 +73,7 @@ const arguments_ = toolCall.function.arguments;
 console.log("Tool requested:", toolName);
 console.log("Arguments:", arguments_);
 
-let result;
-
-if (toolName === "calculate") {
-  result = calculate(arguments_.a, arguments_.b);
-} else if (toolName === "getTime") {
-  result = getTime();
-}
+const result = executeTool(toolName, arguments_);
 
 console.log("Tool result:", result);
 
