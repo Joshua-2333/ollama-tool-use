@@ -19,7 +19,8 @@ const response = await ollama.chat({
   messages: [
     {
       role: "user",
-      content: "What time is it, and what is 25 + 17?",
+      content:
+        "What is today's date, what time is it, and what is 25 + 17?",
     },
   ],
 
@@ -51,7 +52,8 @@ for (const toolCall of toolCalls) {
 const messages = [
   {
     role: "user",
-    content: "What time is it, and what is 25 + 17?",
+    content:
+      "What is today's date, what time is it, and what is 25 + 17?",
   },
 
   response.message,

@@ -1,4 +1,5 @@
 // tools.js
+
 export function calculate(arguments_) {
   const { a, b } = arguments_;
 
@@ -7,6 +8,10 @@ export function calculate(arguments_) {
 
 export function getTime() {
   return new Date().toLocaleTimeString();
+}
+
+export function getDate() {
+  return new Date().toLocaleDateString();
 }
 
 export const toolDefinitions = [
@@ -43,9 +48,22 @@ export const toolDefinitions = [
       },
     },
   },
+
+  {
+    type: "function",
+    function: {
+      name: "getDate",
+      description: "Get the current local date.",
+      parameters: {
+        type: "object",
+        properties: {},
+      },
+    },
+  },
 ];
 
 export const availableTools = {
   calculate,
   getTime,
+  getDate,
 };
