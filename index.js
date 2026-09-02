@@ -14,57 +14,49 @@ function executeTool(toolName, arguments_) {
   return tool(arguments_);
 }
 
-const response = await ollama.chat({
-  model: "qwen3",
-
-  messages: [
-    {
-      role: "user",
-      content:
-        "What is today's date, what time is it, what is 25 + 17, and what is 6 * 7?",
-    },
-  ],
-
-  tools: toolDefinitions,
-});
-
-const toolCalls = response.message.tool_calls;
-
-const toolResults = [];
-
-for (const toolCall of toolCalls) {
-  const toolName = toolCall.function.name;
-  const arguments_ = toolCall.function.arguments;
-
-  console.log("Tool requested:", toolName);
-  console.log("Arguments:", arguments_);
-
-  const result = executeTool(toolName, arguments_);
-
-  console.log("Tool result:", result);
-
-  toolResults.push({
-    role: "tool",
-    tool_name: toolName,
-    content: String(result),
-  });
-}
-
 const messages = [
   {
     role: "user",
     content:
       "What is today's date, what time is it, what is 25 + 17, and what is 6 * 7?",
   },
-
-  response.message,
-
-  ...toolResults,
 ];
 
-const finalResponse = await ollama.chat({
-  model: "qwen3",
-  messages,
-});
+const MAX_TOOL_ROUNDS = 5;
 
-console.log(finalResponse.message.content);
+for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
+  const response = await ollama.chat({
+    model: "qwen3",
+    messages,
+    tools: toolDefinitions,
+  });
+
+  messages.push(response.message);
+
+  if (!response.message.tool_calls) {
+    console.log(response.message.content);
+    break;
+  }
+
+  for (const toolCall of response.message.tool_calls) {
+    const toolName = toolCall.function.name;
+    const arguments_ = toolCall.function.arguments;
+
+    console.log("Tool requested:", toolName);
+    console.log("Arguments:", arguments_);
+
+    const result = executeTool(toolName, arguments_);
+
+    console.log("Tool result:", result);
+
+    messages.push({
+      role: "tool",
+      tool_name: toolName,
+      content: String(result),
+    });
+  }
+
+  if (round === MAX_TOOL_ROUNDS - 1) {
+    console.log("Maximum tool rounds reached.");
+  }
+}
