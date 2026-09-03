@@ -25,17 +25,18 @@ export const toolDefinitions = [
     type: "function",
     function: {
       name: "calculate",
-      description: "Add two numbers together.",
+      description:
+        "Add two numbers together. Use this tool for addition (+), not multiplication.",
       parameters: {
         type: "object",
         properties: {
           a: {
             type: "number",
-            description: "The first number.",
+            description: "The first number to add.",
           },
           b: {
             type: "number",
-            description: "The second number.",
+            description: "The second number to add.",
           },
         },
         required: ["a", "b"],
@@ -47,17 +48,18 @@ export const toolDefinitions = [
     type: "function",
     function: {
       name: "multiply",
-      description: "Multiply two numbers together.",
+      description:
+        "Multiply two numbers together. Use this tool for multiplication (*), not addition.",
       parameters: {
         type: "object",
         properties: {
           a: {
             type: "number",
-            description: "The first number.",
+            description: "The first number to multiply.",
           },
           b: {
             type: "number",
-            description: "The second number.",
+            description: "The second number to multiply.",
           },
         },
         required: ["a", "b"],

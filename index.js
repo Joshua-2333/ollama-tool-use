@@ -16,6 +16,11 @@ function executeTool(toolName, arguments_) {
 
 const messages = [
   {
+    role: "system",
+    content:
+      "Choose tools carefully. Use calculate for addition (+). Use multiply for multiplication (*). Use getTime for the current time. Use getDate for today's date.",
+  },
+  {
     role: "user",
     content:
       "What is today's date, what time is it, what is 25 + 17, and what is 6 * 7?",
@@ -29,6 +34,7 @@ for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
     model: "qwen3",
     messages,
     tools: toolDefinitions,
+    signal: AbortSignal.timeout(300000),
   });
 
   messages.push(response.message);
@@ -45,9 +51,15 @@ for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
     console.log("Tool requested:", toolName);
     console.log("Arguments:", arguments_);
 
-    const result = executeTool(toolName, arguments_);
+    let result;
 
-    console.log("Tool result:", result);
+    try {
+      result = executeTool(toolName, arguments_);
+      console.log("Tool result:", result);
+    } catch (error) {
+      result = `Tool error: ${error.message}`;
+      console.log(result);
+    }
 
     messages.push({
       role: "tool",
