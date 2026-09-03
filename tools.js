@@ -90,6 +90,18 @@ export const toolDefinitions = [
       },
     },
   },
+
+  {
+    type: "function",
+    function: {
+      name: "getWeather",
+      description: "Get the current weather.",
+      parameters: {
+        type: "object",
+        properties: {},
+      },
+    },
+  },
 ];
 
 export const availableTools = {

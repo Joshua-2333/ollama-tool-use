@@ -18,12 +18,13 @@ const messages = [
   {
     role: "system",
     content:
-      "Choose tools carefully. Use calculate for addition (+). Use multiply for multiplication (*). Use getTime for the current time. Use getDate for today's date.",
+      "Choose tools carefully. Use calculate for addition (+). Use multiply for multiplication (*). Use getTime for the current time. Use getDate for today's date. Use getWeather for the current weather.",
   },
+
   {
     role: "user",
     content:
-      "What is today's date, what time is it, what is 25 + 17, and what is 6 * 7?",
+      "What is today's date, what time is it, what is 25 + 17, what is 6 * 7, and what is the weather?",
   },
 ];
 
